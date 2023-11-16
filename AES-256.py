@@ -90,9 +90,9 @@ if __name__=="__main__":
         if args.encrypt:
             plaintext = bytes(input_string, 'utf-8')
             encoded_text = aes_256_encrypt(key, plaintext)
-            print("\nEncrypted String: " + encoded_text.decode() + "\n")
+            print("\nEncrypted String: " + encoded_text.decode())
         if args.decrypt:
             encoded_text = aes_256_decrypt(key, input_string)
-            print("\nDecrypted String: " + encoded_text.decode() + "\n")
+            print("\nDecrypted String: " + encoded_text.decode())
     except:
         pass
