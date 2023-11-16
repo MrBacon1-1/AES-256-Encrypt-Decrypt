@@ -5,36 +5,45 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import os
 from time import sleep
 import base64
+import argparse
 
 def aes_256_encrypt(key, plaintext):
-    iv = os.urandom(16)
+    try:
+        iv = os.urandom(16)
 
-    padder = padding.PKCS7(algorithms.AES.block_size).padder()
-    plaintext_padded = padder.update(plaintext) + padder.finalize()
+        padder = padding.PKCS7(algorithms.AES.block_size).padder()
+        plaintext_padded = padder.update(plaintext) + padder.finalize()
 
-    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
+        cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
 
-    encryptor = cipher.encryptor()
-    ciphertext = encryptor.update(plaintext_padded) + encryptor.finalize()
+        encryptor = cipher.encryptor()
+        ciphertext = encryptor.update(plaintext_padded) + encryptor.finalize()
 
-    encoded_text = base64.b64encode(iv + ciphertext)
+        encoded_text = base64.b64encode(iv + ciphertext)
 
-    return encoded_text
+        return encoded_text
+    
+    except Exception as e:
+        print("\nError Encrypting! " + str(e))
 
 def aes_256_decrypt(key, ciphertext_encoded):
-    ciphertext = base64.b64decode(ciphertext_encoded)
+    try:
+        ciphertext = base64.b64decode(ciphertext_encoded)
 
-    iv = ciphertext[:16]
+        iv = ciphertext[:16]
 
-    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
-    decryptor = cipher.decryptor()
+        cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
+        decryptor = cipher.decryptor()
 
-    decrypted_padded = decryptor.update(ciphertext[16:]) + decryptor.finalize()
+        decrypted_padded = decryptor.update(ciphertext[16:]) + decryptor.finalize()
 
-    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
-    decrypted = unpadder.update(decrypted_padded) + unpadder.finalize()
+        unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
+        decrypted = unpadder.update(decrypted_padded) + unpadder.finalize()
 
-    return decrypted
+        return decrypted
+    
+    except Exception as e:
+        print("\nError Decrypting! " + str(e))
 
 def generate_key(password, iterations=1000):
 
@@ -52,30 +61,38 @@ def generate_key(password, iterations=1000):
 
     return key
 
-def main():
-    while True:
-
-        print("1. Encrypt \n2. Decrypt")
-
-        opt = input("Option: ")
-        if opt == "1":
-            string = input("\nText To Encrypt: ")
-            plaintext = bytes(string, 'utf-8')
-            print("\nEncrypted String: " + aes_256_encrypt(key, plaintext).decode() + "\n")
-        if opt == "2":
-            encrypted_string = input("\nEncrypted String: ")
-            encoded_string = encrypted_string.encode()
-            print("\nDecrypted String: " + aes_256_decrypt(key, encoded_string).decode() + "\n")
-
-        main()
-
 def login():
     global key
     password = input("Password: ")
     key = generate_key(password)
-    os.system(f"title Python AES-256 Example : Key ~ {key}")
-    os.system("cls")
-    main()
 
 if __name__=="__main__":
-    login()
+
+    parser = argparse.ArgumentParser(description='Simple Python AES-256 Encryption & Decryption')
+
+    encrypt_or_decrypt = parser.add_mutually_exclusive_group(required=True)
+
+    encrypt_or_decrypt.add_argument('-e', '--encrypt', action='store_true', help='Encrypt the string.')
+    encrypt_or_decrypt.add_argument('-d', '--decrypt', action='store_true', help='Decrypt the string.')
+    parser.add_argument('-s', '--string', type=str, required=True, help='Input a string to be encrypted or decrypted.')
+
+    args = parser.parse_args()
+
+    encrypt_flag = args.encrypt
+    decrypt_flag = args.decrypt
+    input_string = args.string
+
+    global key
+    password = input("Password: ")
+    key = generate_key(password)
+
+    try:
+        if args.encrypt:
+            plaintext = bytes(input_string, 'utf-8')
+            encoded_text = aes_256_encrypt(key, plaintext)
+            print("\nEncrypted String: " + encoded_text.decode() + "\n")
+        if args.decrypt:
+            encoded_text = aes_256_decrypt(key, input_string)
+            print("\nDecrypted String: " + encoded_text.decode() + "\n")
+    except:
+        pass
