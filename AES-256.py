@@ -6,6 +6,7 @@ import os
 from time import sleep
 import base64
 import argparse
+import getpass
 
 def aes_256_encrypt(key, plaintext):
     try:
@@ -83,7 +84,7 @@ if __name__=="__main__":
     input_string = args.string
 
     global key
-    password = input("Password: ")
+    password = getpass.getpass("Password: ")
     key = generate_key(password)
 
     try:
