@@ -72,28 +72,59 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Simple Python AES-256 Encryption & Decryption')
 
     encrypt_or_decrypt = parser.add_mutually_exclusive_group(required=True)
+    string_or_file = parser.add_mutually_exclusive_group(required=True)
 
     encrypt_or_decrypt.add_argument('-e', '--encrypt', action='store_true', help='Encrypt the string.')
     encrypt_or_decrypt.add_argument('-d', '--decrypt', action='store_true', help='Decrypt the string.')
-    parser.add_argument('-s', '--string', type=str, required=True, help='Input a string to be encrypted or decrypted.')
+    string_or_file.add_argument('-s', '--string', type=str, help='Input a string to be encrypted or decrypted.')
+    string_or_file.add_argument('-f', '--file', type=str, help='Input a file path to be encrypted or decrypted.')
 
     args = parser.parse_args()
 
-    encrypt_flag = args.encrypt
-    decrypt_flag = args.decrypt
     input_string = args.string
+    file_path = args.file
 
     global key
     password = getpass.getpass("Password: ")
     key = generate_key(password)
 
     try:
-        if args.encrypt:
-            plaintext = bytes(input_string, 'utf-8')
-            encoded_text = aes_256_encrypt(key, plaintext)
-            print("\nEncrypted String: " + encoded_text.decode())
-        if args.decrypt:
-            encoded_text = aes_256_decrypt(key, input_string)
-            print("\nDecrypted String: " + encoded_text.decode())
-    except:
-        pass
+        if args.string != None:
+            if args.encrypt:
+                plaintext = bytes(input_string, 'utf-8')
+                encoded_text = aes_256_encrypt(key, plaintext)
+                print("\nEncrypted String: " + encoded_text.decode())
+            if args.decrypt:
+                encoded_text = aes_256_decrypt(key, input_string)
+                print("\nDecrypted String: " + encoded_text.decode())
+        
+        if args.file != None:
+            if os.path.isfile(file_path):
+                with open(file_path, "r") as f:
+                    lines = f.readlines()
+                    f.close()
+
+                with open(file_path, "w") as f:
+                    f.write("")
+                    f.close()
+
+                with open(file_path, "a") as f:
+                    for line in lines:
+                        if args.encrypt:
+                            encrypted_line = aes_256_encrypt(key, bytes(line, 'utf-8'))
+                            f.write(str(encrypted_line.decode()) + "\n")
+
+                        if args.decrypt:
+                            decrypted_line = aes_256_decrypt(key, line)
+                            f.write(str(decrypted_line.decode()))
+
+                if args.encrypt:
+                    print("File Encrypted: " + file_path)
+                if args.decrypt:
+                    print("File Decrypted: " + file_path)
+
+            else:
+                print("Error! File not found.")
+ 
+    except Exception as e:
+        print("Error! " + str(e))
