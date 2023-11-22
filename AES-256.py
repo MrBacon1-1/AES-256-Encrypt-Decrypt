@@ -61,11 +61,6 @@ def generate_key(password, iterations=1000):
 
     return key
 
-def login():
-    global key
-    password = input("Password: ")
-    key = generate_key(password)
-
 if __name__=="__main__":
 
     parser = argparse.ArgumentParser(description='Simple Python AES-256 Encryption & Decryption')
