@@ -3,12 +3,12 @@ Simple Python Script Using AES-256 To Encrypt And Decrypt Text
 
 # Contents
 
-1 >> Requirements
+1 >> [Requirements] (#requirements)
 2 >> Arguments
 3 >> Usage Examples
 4 >> Support Me
 
-# req
+# Requirements 
 
 `pip install cryptography`
 
