@@ -11,7 +11,7 @@ Simple Python Script Using AES-256 To Encrypt And Decrypt Text
 
 If you download an exe from the releases you do not need to worry about requirements!
 
-`pip install cryptography psutil`
+`pip install cryptography`
 
 # Arguments
 
