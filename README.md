@@ -6,7 +6,6 @@ Simple Python Script Using AES-256 To Encrypt And Decrypt Text
 1. [Requirements](#requirements)
 2. [Arguments](#arguments)
 3. [Usage Examples](#usage)
-4. [Support Me]()
 
 # Requirements 
 
