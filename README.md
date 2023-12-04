@@ -19,13 +19,9 @@ If you download an exe from the releases you do not need to worry about requirem
 Options:
 
   -h, --help                  Shows the help message.
-  
   -e, --encrypt               Encrypt the string.
-  
   -d, --decrypt               Decrypt the string.
-  
   -s STRING, --string STRING  Input a string to be encrypted or decrypted.
-  
   -f FILE, --file FILE        Input a file path to be encrypted or decrypted.
   
 
