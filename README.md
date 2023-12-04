@@ -32,7 +32,7 @@ Options:
 
 Encrypt String:
 
-# It may break sometimes if '\' is used but if it is done via a file it will work fine
+It may break sometimes if '\' is used but if it is done via a file it will work fine
 
 `python AES-256.py -e -s "Test"`
 
