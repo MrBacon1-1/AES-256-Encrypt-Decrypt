@@ -7,7 +7,7 @@ import base64
 import argparse
 import getpass
 
-def aes_256_encrypt(key, plaintext):
+def aes_256_encrypt(key: bytes, plaintext: bytes) -> bytes:
     try:
         iv = os.urandom(16)
 
@@ -26,7 +26,7 @@ def aes_256_encrypt(key, plaintext):
     except Exception as e:
         print("\nError Encrypting! " + str(e))
 
-def aes_256_decrypt(key, ciphertext_encoded):
+def aes_256_decrypt(key: bytes, ciphertext_encoded: bytes) -> bytes:
     try:
         ciphertext = base64.b64decode(ciphertext_encoded)
 
@@ -45,7 +45,7 @@ def aes_256_decrypt(key, ciphertext_encoded):
     except Exception as e:
         print("\nError Decrypting! " + str(e))
 
-def generate_key(password, iterations=1000):
+def generate_key(password: str, iterations=1946) -> bytes:
 
     salt = b'~4\xb43\xf6.\xc16P\xc7C\x84\n\xc0\x9e\x96'
 
