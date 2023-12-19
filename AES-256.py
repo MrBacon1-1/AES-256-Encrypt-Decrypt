@@ -113,9 +113,9 @@ if __name__=="__main__":
                             f.write(str(decrypted_line.decode()))
 
                 if args.encrypt:
-                    print("File Encrypted: " + file_path)
+                    print("\nFile Encrypted: " + file_path)
                 if args.decrypt:
-                    print("File Decrypted: " + file_path)
+                    print("\nFile Decrypted: " + file_path)
 
             else:
                 print("Error! File not found.")
